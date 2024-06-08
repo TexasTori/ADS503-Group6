@@ -1,0 +1,126 @@
+---
+title: "ADS 503 Final Project"
+output: html_notebook
+---
+
+```{r}
+library(caret)
+library(kernlab)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(tidyverse)
+library(plotmo)
+library(earth)
+library(corrplot)
+library(randomForest)
+```
+
+```{r}
+Health_df <- read_csv("healthcare-dataset-stroke-data.csv")
+```
+
+
+```{r}
+head(Health_df)
+```
+
+```{r}
+summary(Health_df)
+```
+
+```{r}
+# Check for NA Values
+colSums(is.na(Health_df))
+
+# Replace bmi 'N/A' with 'NA' to find missing values
+Health_df$bmi[Health_df$bmi == "N/A"] <- NA
+```
+
+```{r}
+# Age Histogram
+hist(Health_df$age, main = 'Age Histogram', xlab = 'Age', col = 'red')
+
+# Glucose Histogram
+hist(Health_df$avg_glucose_level, main = 'Average Glucose Level Histogram', 
+     xlab = 'Average Glucose Level', col = 'orange')
+
+# Gender Bar Plot
+barplot(table(Health_df$gender), main = 'Gender Distribution', xlab = 'Gender',
+        ylab = 'Frequency', col = 'green')
+
+# Marital Status Bar Plot
+barplot(table(Health_df$ever_married), main = 'Ever Married Distribution', xlab = 'Ever Married', 
+        ylab ='Frequency', col = 'blue')
+
+# Work Type Bar Plot
+barplot(table(Health_df$work_type), main = 'Work Type Distribution', xlab = 'Work Type',
+        ylab = 'Frequency', col = 'violet')
+
+# Residence Type Bar Plot
+barplot(table(Health_df$Residence_type), main = 'Residence Type Distribution', xlab = 'Residence Type',
+        ylab = 'Frequency', col = 'pink')
+
+# Smoker Status Bar Plot
+barplot(table(Health_df$smoking_status), main = 'Smoking Status Distribution', xlab = 'Smoking Status',
+        ylab = 'Frequency', col = 'grey')
+```
+
+```{r}
+# Stroke Counts by Smoking Status
+ggplot(Health_df, aes(x = smoking_status, fill = factor(stroke))) +
+  geom_bar(position = 'dodge') +
+  geom_text(stat = 'count', aes(label = ..count..), position = position_dodge(width = 0.5), vjust = -0.1) +
+  labs(title = 'Stroke Counts by Smoking Status',
+       x = 'Smoking Status',
+       y = 'Count',
+       fill = 'Stroke') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Stroke Counts by Heart Disease 
+ggplot(Health_df, aes(x = factor(heart_disease), fill = factor(stroke))) +
+  geom_bar(position = 'dodge') +
+  geom_text(stat = 'count', aes(label = ..count..), position = position_dodge(width = 0.5), vjust = -0.1) +
+  labs(title = 'Stroke Counts by Heart Disease',
+       x = 'Heart Disease',
+       y = 'Count',
+       fill = 'Stroke') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Stroke Counts by Marital Status
+ggplot(Health_df, aes(x = ever_married, fill = factor(stroke))) +
+  geom_bar(position = 'dodge') +
+  geom_text(stat = 'count', aes(label = ..count..), position = position_dodge(width = 0.5), vjust = -0.1) +
+  labs(title = 'Stroke Counts by Marital Status',
+       x = 'Ever Married',
+       y = 'Count',
+       fill = 'Stroke') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r}
+# Heat Map
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
